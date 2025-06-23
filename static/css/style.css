@@ -1,0 +1,586 @@
+/* リセットCSS */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Yu Gothic UI', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
+    background-color: #f7f7f7;
+    color: #333;
+    line-height: 1.6;
+    /* スクロール許可 */
+    overflow-y: auto;
+    overflow-x: hidden;
+    /* iOS Safari のスクロールバウンス防止 */
+    -webkit-overflow-scrolling: touch;
+    /* タッチアクション許可 */
+    touch-action: pan-y;
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    /* スクロール可能にする */
+    min-height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ヘッダー */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+    padding: 20px 0;
+    border-bottom: 2px solid #e0e0e0;
+}
+
+header h1 {
+    color: #1976d2;
+    font-size: 2.2em;
+    font-weight: 600;
+}
+
+header .btn {
+    margin-left: 10px;
+}
+
+/* ボタンスタイル */
+.btn {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-primary {
+    background-color: #1976d2;
+    color: white;
+}
+
+.btn-primary:hover {
+    background-color: #1565c0;
+}
+
+.btn-secondary {
+    background-color: #757575;
+    color: white;
+}
+
+.btn-secondary:hover {
+    background-color: #616161;
+}
+
+.btn-danger {
+    background-color: #d32f2f;
+    color: white;
+}
+
+.btn-danger:hover {
+    background-color: #b71c1c;
+}
+
+.btn-info {
+    background-color: #0288d1;
+    color: white;
+}
+
+.btn-info:hover {
+    background-color: #0277bd;
+}
+
+.btn-solve {
+    background-color: #4caf50;
+    color: white;
+    font-size: 18px;
+    padding: 15px 30px;
+    font-weight: 600;
+}
+
+.btn-solve:hover {
+    background-color: #45a049;
+}
+
+/* 入力セクション */
+.input-section {
+    background-color: #e3eafc;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.section-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    gap: 15px;
+}
+
+.section-header label {
+    font-weight: 600;
+    color: #333;
+    font-size: 16px;
+}
+
+/* 入力フィールド */
+.equation-item, .variable-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    gap: 10px;
+}
+
+.equation-input, .variable-input {
+    flex: 1;
+    padding: 12px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    transition: border-color 0.3s ease;
+}
+
+.equation-input:focus, .variable-input:focus {
+    outline: none;
+    border-color: #1976d2;
+    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+}
+
+.equation-input {
+    min-width: 400px;
+}
+
+.variable-input {
+    min-width: 150px;
+}
+
+.btn-remove {
+    background-color: #d32f2f;
+    color: white;
+    padding: 8px 12px;
+    font-size: 12px;
+    min-width: 60px;
+}
+
+.btn-remove:hover {
+    background-color: #b71c1c;
+}
+
+/* 解を求めるセクション */
+.solve-section {
+    text-align: center;
+    margin: 30px 0;
+}
+
+/* 結果セクション */
+.result-section {
+    margin-top: 30px;
+    padding: 20px;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    min-height: 100px;
+}
+
+.solution-item {
+    margin-bottom: 20px;
+    padding: 15px;
+    background-color: #f9f9f9;
+    border-radius: 6px;
+    border-left: 4px solid #4caf50;
+}
+
+.solution-label {
+    font-weight: 600;
+    color: #2e7d32;
+    margin-bottom: 10px;
+    font-size: 16px;
+}
+
+.solution-vars {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.solution-var {
+    background-color: white;
+    padding: 10px 15px;
+    border-radius: 4px;
+    border: 1px solid #e0e0e0;
+    font-size: 16px;
+}
+
+/* エラーメッセージ */
+.error-message {
+    background-color: #ffebee;
+    color: #c62828;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 20px 0;
+    border-left: 4px solid #d32f2f;
+    display: none;
+}
+
+/* ローディング */
+.loading {
+    display: none;
+    text-align: center;
+    padding: 30px;
+}
+
+.spinner {
+    border: 4px solid #f3f3f3;
+    border-top: 4px solid #1976d2;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* モーダル */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0,0,0,0.5);
+}
+
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    padding: 30px;
+    border-radius: 8px;
+    width: 90%;
+    max-width: 600px;
+    position: relative;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+}
+
+.close {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #aaa;
+}
+
+.close:hover {
+    color: #000;
+}
+
+.modal-content h2 {
+    margin-bottom: 20px;
+    color: #1976d2;
+}
+
+.symbols-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.symbols-table th,
+.symbols-table td {
+    border: 1px solid #ddd;
+    padding: 12px;
+    text-align: left;
+}
+
+.symbols-table th {
+    background-color: #f5f5f5;
+    font-weight: 600;
+    color: #333;
+}
+
+.symbols-table tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.symbols-table code {
+    background-color: #f4f4f4;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-family: 'Consolas', 'Monaco', monospace;
+}
+
+/* レスポンシブ - タブレット */
+@media (max-width: 1024px) {
+    .container {
+        max-width: 100%;
+        padding: 15px;
+    }
+    
+    .equation-input {
+        min-width: 300px;
+    }
+}
+
+/* レスポンシブ - スマートフォン */
+@media (max-width: 768px) {
+    body {
+        /* スマートフォンでのスクロール最適化 */
+        overflow-y: scroll;
+        -webkit-overflow-scrolling: touch;
+        /* iOSでのスクロールバウンス制御 */
+        overscroll-behavior: contain;
+    }
+    
+    .container {
+        padding: 10px;
+        /* スクロール確保 */
+        min-height: calc(100vh - 20px);
+        overflow: visible;
+    }
+    
+    header {
+        position: relative;
+        flex-direction: column;
+        gap: 15px;
+        text-align: center;
+        padding: 15px 0;
+    }
+    
+    header h1 {
+        font-size: 1.8em;
+        margin-bottom: 10px;
+    }
+    
+    #ac-btn {
+        position: static;
+        margin: 10px auto 0;
+    }
+    
+    .section-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    
+    .section-header .btn {
+        width: 100%;
+        margin-bottom: 5px;
+    }
+    
+    .equation-input, .variable-input {
+        min-width: unset;
+        width: 100%;
+        font-size: 16px; /* iOS Safariのズーム防止 */
+        padding: 15px;
+        /* タッチスクロール許可 */
+        touch-action: manipulation;
+    }
+    
+    .equation-item, .variable-item {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        /* スクロール内での配置 */
+        margin-bottom: 15px;
+    }
+    
+    .btn-remove {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+        /* タッチ操作許可 */
+        touch-action: manipulation;
+    }
+    
+    .btn-solve {
+        width: 100%;
+        padding: 18px;
+        font-size: 20px;
+        margin: 20px 0;
+        /* タッチ操作許可 */
+        touch-action: manipulation;
+    }
+    
+    .solution-vars {
+        flex-direction: column;
+        gap: 10px;
+    }
+    
+    .solution-var {
+        padding: 15px;
+        font-size: 14px;
+        word-break: break-all;
+        /* 数式のスクロール許可 */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .modal-content {
+        width: 95%;
+        margin: 2% auto;
+        padding: 15px;
+        max-height: 90vh;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        /* モーダル内スクロール */
+        overscroll-behavior: contain;
+    }
+    
+    .symbols-table {
+        font-size: 12px;
+        /* テーブルのスクロール */
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .symbols-table th,
+    .symbols-table td {
+        padding: 8px 4px;
+        white-space: nowrap;
+    }
+}
+
+/* 小さなスマートフォン対応 */
+@media (max-width: 480px) {
+    .container {
+        padding: 5px;
+    }
+    
+    header h1 {
+        font-size: 1.5em;
+    }
+    
+    .input-section {
+        padding: 15px;
+        margin-bottom: 15px;
+    }
+    
+    .equation-input, .variable-input {
+        padding: 12px;
+        font-size: 16px;
+    }
+    
+    .btn {
+        padding: 12px 15px;
+        font-size: 14px;
+    }
+    
+    .btn-solve {
+        padding: 15px;
+        font-size: 18px;
+    }
+    
+    .modal-content {
+        padding: 10px;
+        margin: 1% auto;
+    }
+    
+    .symbols-table {
+        font-size: 10px;
+    }
+    
+    .symbols-table th,
+    .symbols-table td {
+        padding: 6px 2px;
+    }
+}
+
+/* ACボタンを右上に配置 */
+#ac-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* タッチデバイス対応 */
+@media (hover: none) and (pointer: coarse) {
+    body {
+        /* タッチデバイスでのスクロール最適化 */
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: auto;
+    }
+    
+    .btn {
+        min-height: 44px; /* Appleのタッチターゲット推奨サイズ */
+        padding: 12px 20px;
+        /* タッチ操作許可 */
+        touch-action: manipulation;
+    }
+    
+    .btn-remove {
+        min-height: 44px;
+        padding: 12px;
+        touch-action: manipulation;
+    }
+    
+    .equation-input, .variable-input {
+        min-height: 44px;
+        padding: 12px;
+        border-radius: 8px;
+        /* 入力フィールドでのタッチ操作 */
+        touch-action: manipulation;
+    }
+    
+    .close {
+        font-size: 32px;
+        padding: 10px;
+        touch-action: manipulation;
+    }
+    
+    /* スクロール可能エリアの明示 */
+    .container, .modal-content, .solution-var {
+        -webkit-overflow-scrolling: touch;
+        overscroll-behavior: contain;
+    }
+}
+
+/* iOS Safari対応 */
+@supports (-webkit-touch-callout: none) {
+    .equation-input, .variable-input {
+        font-size: 16px !important; /* ズーム防止 */
+        border-radius: 0; /* iOS角丸リセット */
+    }
+      .btn {
+        -webkit-appearance: none;
+        appearance: none;
+        border-radius: 8px;
+    }
+}
+
+/* Android Chrome対応 */
+.equation-input:focus, .variable-input:focus {
+    transform: none; /* Androidでのフォーカス時の変形防止 */
+}
+
+/* ハイコントラスト表示対応 */
+@media (prefers-contrast: high) {
+    .btn {
+        border: 2px solid currentColor;
+    }
+    
+    .equation-input, .variable-input {
+        border-width: 2px;
+    }
+}
+
+/* ダークモード対応（準備） */
+@media (prefers-color-scheme: dark) {
+    /* 将来的にダークモード対応時に使用 */
+}

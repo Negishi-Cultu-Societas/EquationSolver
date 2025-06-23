@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, minimum-scale=1.0, maximum-scale=3.0">
+    <meta name="theme-color" content="#1976d2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Equation Solver">    <meta name="mobile-web-app-capable" content="yes">
+    <title>Equation Solver - Web版</title>
+    <link rel="manifest" href="{{ url_for('static', filename='manifest.json') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="apple-touch-icon" sizes="180x180" href="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTgwIiBoZWlnaHQ9IjE4MCIgdmlld0JveD0iMCAwIDE4MCAxODAiIGZpbGw9Im5vbmUiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iOTAiIGN5PSI5MCIgcj0iOTAiIGZpbGw9IiMxOTc2ZDIiLz48dGV4dCB4PSI5MCIgeT0iMTEwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmaWxsPSJ3aGl0ZSIgZm9udC1zaXplPSI0OCIgZm9udC1mYW1pbHk9InNhbnMtc2VyaWYiPng9PC90ZXh0Pjwvc3ZnPg==">>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            options: {
+                menuOptions: {
+                    settings: {
+                        zoom: 'Click'
+                    }
+                }
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Equation Solver</h1>
+            <button id="symbols-btn" class="btn btn-info">記号対応表</button>
+            <button id="ac-btn" class="btn btn-danger">AC</button>
+        </header>
+
+        <!-- 記号対応表のモーダル -->
+        <div id="symbols-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>計算記号対応表</h2>
+                <table class="symbols-table">
+                    <tr><th>記号</th><th>入力方法</th><th>例</th></tr>
+                    <tr><td>+</td><td>+</td><td>x + 2</td></tr>
+                    <tr><td>-</td><td>-</td><td>x - 3</td></tr>
+                    <tr><td>*</td><td>*</td><td>2 * x</td></tr>
+                    <tr><td>/</td><td>/</td><td>x / 5</td></tr>
+                    <tr><td>^</td><td>**</td><td>x**2</td></tr>
+                    <tr><td>=</td><td>=</td><td>x + 2 = 5</td></tr>
+                    <tr><td>√</td><td>sqrt(x)</td><td>sqrt(x)</td></tr>
+                    <tr><td>π</td><td>pi</td><td>pi * r**2</td></tr>
+                    <tr><td>e</td><td>E</td><td>E**x</td></tr>
+                    <tr><td>sin</td><td>sin(x)</td><td>sin(x)</td></tr>
+                    <tr><td>cos</td><td>cos(x)</td><td>cos(x)</td></tr>
+                    <tr><td>log</td><td>log(x)</td><td>log(x)</td></tr>
+                    <tr><td>log10</td><td>log(x, 10)</td><td>log(x, 10)</td></tr>
+                </table>
+            </div>
+        </div>
+
+        <main>
+            <!-- 方程式入力セクション -->
+            <section class="input-section">
+                <div class="section-header">
+                    <label>方程式（例: x**2 + 2*x + 1 = 0）:</label>
+                    <button id="add-equation-btn" class="btn btn-primary">追加</button>
+                </div>
+                <div id="equations-container" class="equations-container">
+                    <!-- 方程式入力欄がJavaScriptで動的に追加される -->
+                </div>
+            </section>
+
+            <!-- 変数入力セクション -->
+            <section class="input-section">
+                <div class="section-header">
+                    <label>解く変数（例: x）:</label>
+                    <button id="add-variable-btn" class="btn btn-primary">追加</button>
+                    <button id="auto-detect-btn" class="btn btn-secondary">自動追加</button>
+                </div>
+                <div id="variables-container" class="variables-container">
+                    <!-- 変数入力欄がJavaScriptで動的に追加される -->
+                </div>
+            </section>
+
+            <!-- 解を求めるボタン -->
+            <div class="solve-section">
+                <button id="solve-btn" class="btn btn-solve">解を求める</button>
+            </div>
+
+            <!-- 結果表示エリア -->
+            <section id="result-section" class="result-section">
+                <div id="result-content"></div>
+            </section>
+
+            <!-- エラー表示エリア -->
+            <div id="error-message" class="error-message"></div>
+
+            <!-- ローディング表示 -->
+            <div id="loading" class="loading">
+                <div class="spinner"></div>
+                <p>計算中...</p>
+            </div>
+        </main>    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+    <script>
+        // Service Worker の登録
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/static/sw.js')
+                    .then(function(registration) {
+                        console.log('ServiceWorker registered successfully:', registration.scope);
+                    })
+                    .catch(function(error) {
+                        console.log('ServiceWorker registration failed:', error);
+                    });
+            });
+        }
+
+        // PWA インストールプロンプト
+        let deferredPrompt;
+        window.addEventListener('beforeinstallprompt', function(e) {
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // カスタムインストールボタンを表示（必要に応じて）
+            const installBtn = document.createElement('button');
+            installBtn.textContent = 'アプリをインストール';
+            installBtn.className = 'btn btn-info';
+            installBtn.style.position = 'fixed';
+            installBtn.style.bottom = '20px';
+            installBtn.style.right = '20px';
+            installBtn.style.zIndex = '1000';
+            
+            installBtn.addEventListener('click', function() {
+                installBtn.style.display = 'none';
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then(function(choiceResult) {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('User accepted the PWA install prompt');
+                    } else {
+                        console.log('User dismissed the PWA install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            });
+            
+            // モバイルデバイスでのみ表示
+            if (window.innerWidth <= 768) {
+                document.body.appendChild(installBtn);
+                
+                // 5秒後に自動で非表示
+                setTimeout(function() {
+                    if (installBtn.parentNode) {
+                        installBtn.style.display = 'none';
+                    }
+                }, 5000);
+            }
+        });
+
+        // インストール完了の検出
+        window.addEventListener('appinstalled', function(e) {
+            console.log('PWA was installed');
+            // インストール完了時の処理
+        });
+    </script>
+</body>
+</html>
