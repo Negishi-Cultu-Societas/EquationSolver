@@ -4,6 +4,31 @@ from sympy import symbols, Eq, solve, sympify, latex
 import re
 from matplotlib import pyplot as plt
 
+# --- スクロール対応ここから ---
+root = tk.Tk()
+root.title('Equation Solver')
+root.geometry('750x850')
+root.configure(bg='#f7f7f7')
+
+main_canvas = tk.Canvas(root, bg='#f7f7f7', highlightthickness=0)
+main_canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+scrollbar = tk.Scrollbar(root, orient=tk.VERTICAL, command=main_canvas.yview)
+scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+main_canvas.configure(yscrollcommand=scrollbar.set)
+
+main_frame = tk.Frame(main_canvas, bg='#f7f7f7')
+main_canvas.create_window((0, 0), window=main_frame, anchor='nw')
+
+def on_configure(event):
+    main_canvas.configure(scrollregion=main_canvas.bbox('all'))
+main_frame.bind('<Configure>', on_configure)
+
+def _on_mousewheel(event):
+    main_canvas.yview_scroll(int(-1*(event.delta/120)), 'units')
+main_canvas.bind_all('<MouseWheel>', _on_mousewheel)
+# --- スクロール対応ここまで ---
+
 # 解く変数・方程式のEntryリスト
 solve_var_entries = []
 eq_entries = []
@@ -75,11 +100,6 @@ symbols_guide = (
     "log10 | log(x, 10)  | log(x, 10)\n"
 )
 
-root = tk.Tk()
-root.title('Equation Solver')
-root.geometry('750x850')
-root.configure(bg='#f7f7f7')
-
 # Style for frames and labels
 frame_style = {'bg': '#f7f7f7'}
 label_style = {'bg': '#f7f7f7', 'font': ("Yu Gothic UI", 13)}
@@ -111,11 +131,11 @@ def hide_symbols_popup():
         symbols_popup.destroy()
         symbols_popup = None
 
-show_button = tk.Button(root, text='記号対応表', command=show_symbols_popup, **button_style)
+# ここから親をmain_frameに変更
+show_button = tk.Button(main_frame, text='記号対応表', command=show_symbols_popup, **button_style)
 show_button.pack(pady=(18, 8), anchor='w', padx=24)
 
-# Equation input
-input_frame = tk.Frame(root, bg='#e3eafc', padx=18, pady=14)
+input_frame = tk.Frame(main_frame, bg='#e3eafc', padx=18, pady=14)
 input_frame.pack(pady=12, fill='x', padx=24)
 label_eq = tk.Label(input_frame, text='方程式（例: x**2 + 2*x + 1 = 0）:', font=("Yu Gothic UI", 13), bg='#e3eafc')
 label_eq.grid(row=0, column=0, sticky='w')
@@ -124,8 +144,7 @@ add_eq_button.grid(row=0, column=1, padx=(10,0))
 eq_frame = tk.Frame(input_frame, bg='#e3eafc')
 eq_frame.grid(row=1, column=0, columnspan=2, sticky='w', padx=(10,0), pady=(8,0))
 
-# Variable input
-var_frame = tk.Frame(root, bg='#e3eafc', padx=18, pady=14)
+var_frame = tk.Frame(main_frame, bg='#e3eafc', padx=18, pady=14)
 var_frame.pack(pady=12, fill='x', padx=24)
 label_solve = tk.Label(var_frame, text='解く変数（例: x）:', font=("Yu Gothic UI", 13), bg='#e3eafc')
 label_solve.grid(row=0, column=0, sticky='w')
@@ -134,9 +153,10 @@ add_solve_button.grid(row=0, column=1, padx=(10,0))
 solve_vars_frame = tk.Frame(var_frame, bg='#e3eafc')
 solve_vars_frame.grid(row=1, column=0, columnspan=2, sticky='w', padx=(10,0), pady=(8,0))
 
-result_label = tk.Label(root, text='', font=("Yu Gothic UI", 13), bg='#f7f7f7', fg='#d9534f')
+result_label = tk.Label(main_frame, text='', font=("Yu Gothic UI", 13), bg='#f7f7f7', fg='#d9534f')
 result_label.pack(pady=16)
 
+# --- preprocess_equationをここに移動 ---
 def preprocess_equation(eq_str, symbol_names):
     # 変数名リストを長い順にソート（例: xyz, xy, x）
     sorted_vars = sorted(symbol_names, key=len, reverse=True)
@@ -147,7 +167,9 @@ def preprocess_equation(eq_str, symbol_names):
         # 変数と変数の間（例: xy → x*y）
         eq_str = re.sub(rf'({var})(?={"|".join(sorted_vars)})', lambda m: m.group(1) + '*', eq_str)
     return eq_str
+# --- preprocess_equationここまで ---
 
+# --- solve_equationをここに移動 ---
 def solve_equation():
     try:
         eqs = get_all_eqs()
@@ -200,15 +222,16 @@ def solve_equation():
         fig, ax = plt.subplots(figsize=(10, 1+len(display_lines)*0.7))
         ax.axis('off')
         for i, (label, formula) in enumerate(display_lines):
-            y = 1 - (i+1)*0.12
-            ax.text(0.05, y, label, fontsize=16, ha='left', va='top', family='sans-serif')
+            y = 1 - (i+1)*0.18  # 1行分広げる
+            ax.text(0.05, y, label, fontsize=15, ha='left', va='top', family='sans-serif')
             if formula:
-                ax.text(0.25, y, formula, fontsize=16, ha='left', va='top')
+                ax.text(0.08, y-0.08, formula, fontsize=16, ha='left', va='top')
         plt.show()
     except Exception as e:
         messagebox.showerror('Error', f'Input error: {e}')
+# --- solve_equationここまで ---
 
-solve_button = tk.Button(root, text='解を求める', command=solve_equation, **button_style, width=14, height=2)
+solve_button = tk.Button(main_frame, text='解を求める', command=solve_equation, **button_style, width=14, height=2)
 solve_button.pack(pady=22)
 
 # 最初に1つ方程式欄を追加
