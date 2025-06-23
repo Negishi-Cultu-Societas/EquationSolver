@@ -199,29 +199,6 @@ def auto_detect_vars():
         return jsonify({'error': f'変数検出エラー: {str(e)}'})
 
 if __name__ == '__main__':
-    print("\n" + "="*50)
-    print("🔢 Equation Solver - Androidスマートフォン対応版")
-    print("="*50)
-    
-    local_ip = get_local_ip()
-    print(f"📱 PCからアクセス: http://127.0.0.1:5000")
-    print(f"📱 スマートフォンからアクセス: http://{local_ip}:5000")
-    print(f"📱 QRコード: http://{local_ip}:5000/qr")
-    
-    print("\n🚀 Androidスマートフォンでのアクセス方法:")
-    print("1. スマートフォンのブラウザで上記URLにアクセス")
-    print("2. または QRコードをスキャン")
-    print("3. 「ホーム画面に追加」でアプリ化可能")
-    
-    print("\n✨ モバイル最適化機能:")
-    print("- タッチ操作対応")
-    print("- レスポンシブデザイン")
-    print("- PWA（アプリ化）対応")
-    print("- オフライン機能")
-    print("- バーチャルキーボード対応")
-    
-    print(f"\n{'-'*50}")
-    print("サーバー起動中... (Ctrl+C で停止)")
-    print(f"{'-'*50}\n")
-    
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    import os
+    port = int(os.environ.get('PORT', 5000))
+    app.run(debug=True, host='0.0.0.0', port=port)
