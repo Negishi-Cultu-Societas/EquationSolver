@@ -153,6 +153,33 @@ add_solve_button.grid(row=0, column=1, padx=(10,0))
 solve_vars_frame = tk.Frame(var_frame, bg='#e3eafc')
 solve_vars_frame.grid(row=1, column=0, columnspan=2, sticky='w', padx=(10,0), pady=(8,0))
 
+# 変数入力欄の下に「自動追加」ボタンを追加
+
+def auto_add_solve_vars():
+    eqs = get_all_eqs()
+    symbol_names = list(extract_symbols_from_texts(eqs))
+    # 既存の変数欄をクリア
+    for frame, entry in solve_var_entries[:]:
+        frame.destroy()
+    solve_var_entries.clear()
+    # 自動検出した変数ごとに欄を追加
+    for var in symbol_names:
+        frame = tk.Frame(solve_vars_frame, bg='#e3eafc')
+        entry = tk.Entry(frame, width=20, font=("Yu Gothic UI", 13), bg='#fff', relief='solid', bd=1)
+        entry.insert(0, var)
+        entry.pack(side=tk.LEFT, padx=5, pady=6)
+        def remove(f=frame, e=entry):
+            solve_var_entries.remove((f, e))
+            f.destroy()
+        del_button = tk.Button(frame, text='削除', command=remove, font=("Yu Gothic UI", 11), bg='#d32f2f', fg='white', activebackground='#b71c1c', activeforeground='white', relief='flat', bd=0, width=5, cursor='hand2')
+        del_button.pack(side=tk.LEFT, padx=4)
+        frame.pack(anchor='w', pady=6, fill='x', padx=0)
+        solve_var_entries.append((frame, entry))
+
+# 変数入力欄の下にボタンを追加
+auto_add_button = tk.Button(var_frame, text='自動追加', command=auto_add_solve_vars, **button_style, width=10)
+auto_add_button.grid(row=2, column=0, columnspan=2, pady=(8,0), sticky='w')
+
 result_label = tk.Label(main_frame, text='', font=("Yu Gothic UI", 13), bg='#f7f7f7', fg='#d9534f')
 result_label.pack(pady=16)
 
@@ -174,14 +201,20 @@ def solve_equation():
     try:
         eqs = get_all_eqs()
         solve_vars = get_all_solve_var_names()
-        if not solve_vars:
-            result_label.config(text='Please enter at least one variable to solve for.')
-            return
         if not eqs:
             result_label.config(text='Please enter at least one equation.')
             return
-        all_texts = eqs + solve_vars
-        symbol_names = extract_symbols_from_texts(all_texts)
+        # 求める変数が空なら自動検知
+        if not solve_vars:
+            # 方程式から変数名を抽出
+            symbol_names = list(extract_symbols_from_texts(eqs))
+            if not symbol_names:
+                result_label.config(text='変数が検出できませんでした。')
+                return
+            solve_vars = symbol_names
+        else:
+            all_texts = eqs + solve_vars
+            symbol_names = extract_symbols_from_texts(all_texts)
         if symbol_names:
             symbols(','.join(symbol_names))
         eq_list = []
