@@ -32,8 +32,9 @@ body {
 /* ヘッダー */
 header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: row;
     align-items: center;
+    justify-content: space-between;
     margin-bottom: 30px;
     padding: 20px 0;
     border-bottom: 2px solid #e0e0e0;
@@ -43,10 +44,32 @@ header h1 {
     color: #1976d2;
     font-size: 2.2em;
     font-weight: 600;
+    text-align: left;
+    margin: 0;
 }
 
 header .btn {
     margin-left: 10px;
+}
+
+/* ヘッダーのボタンを左右に分けて配置 */
+.header-btns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0;
+}
+.header-btn-left {
+    flex: 1;
+    display: flex;
+    justify-content: flex-start;
+}
+.header-btn-right {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
 }
 
 /* ボタンスタイル */
@@ -108,6 +131,13 @@ header .btn {
 
 .btn-solve:hover {
     background-color: #45a049;
+}
+
+/* 小さいボタン用 */
+.btn-sm {
+    padding: 6px 12px;
+    font-size: 12px;
+    border-radius: 4px;
 }
 
 /* 入力セクション */
@@ -268,12 +298,15 @@ header .btn {
 
 .modal-content {
     background-color: white;
-    margin: 10% auto;
+    margin: 0 auto;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     padding: 30px;
     border-radius: 8px;
     width: 90%;
     max-width: 600px;
-    position: relative;
     box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
@@ -366,6 +399,7 @@ header .btn {
     header h1 {
         font-size: 1.8em;
         margin-bottom: 10px;
+        text-align: left;
     }
     
     #ac-btn {
@@ -434,13 +468,13 @@ header .btn {
     
     .modal-content {
         width: 95%;
-        margin: 2% auto;
+        max-width: 95vw;
         padding: 15px;
         max-height: 90vh;
         overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
-        /* モーダル内スクロール */
-        overscroll-behavior: contain;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
     }
     
     .symbols-table {
@@ -504,9 +538,52 @@ header .btn {
 
 /* ACボタンを右上に配置 */
 #ac-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
+    position: static;
+    top: unset;
+    right: unset;
+    margin-left: 8px;
+}
+
+/* モバイル用ヘッダー調整 */
+@media (max-width: 600px) {
+    header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 12px 0;
+    }
+    .header-btns {
+        justify-content: center;
+        width: 100%;
+        gap: 10px;
+    }
+    #symbols-btn {
+        order: 1;
+        margin: 0 auto;
+        display: block;
+        min-width: 120px;
+    }
+    #ac-btn {
+        order: 2;
+        margin: 0;
+    }
+    h1 {
+        font-size: 1.2em;
+        margin-bottom: 0;
+    }
+    .btn-sm {
+        font-size: 11px;
+        padding: 5px 10px;
+    }
+}
+
+/* PC用のボタン配置 */
+@media (min-width: 601px) {
+    .header-btns {
+        display: flex;
+        flex-direction: row;
+        gap: 10px;
+    }
 }
 
 /* タッチデバイス対応 */
