@@ -270,4 +270,23 @@ solve_button.pack(pady=22)
 # 最初に1つ方程式欄を追加
 add_eq()
 
+# --- AC(All Clear)ボタンの実装 ---
+def all_clear():
+    # 方程式欄クリア
+    for frame, entry in eq_entries[:]:
+        frame.destroy()
+    eq_entries.clear()
+    # 変数欄クリア
+    for frame, entry in solve_var_entries[:]:
+        frame.destroy()
+    solve_var_entries.clear()
+    # 結果ラベルもクリア
+    result_label.config(text='')
+    # 最初に1つ方程式欄を追加
+    add_eq()
+
+# 右上にACボタン配置
+ac_button = tk.Button(main_frame, text='AC', command=all_clear, font=("Yu Gothic UI", 12, 'bold'), bg='#d32f2f', fg='white', activebackground='#b71c1c', activeforeground='white', relief='flat', bd=0, width=5, cursor='hand2')
+ac_button.place(relx=1.0, x=-20, y=10, anchor='ne')
+
 root.mainloop()
