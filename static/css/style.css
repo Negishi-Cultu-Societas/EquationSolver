@@ -201,6 +201,36 @@ header .btn {
     min-width: 150px;
 }
 
+.assigned-variable-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.assigned-variable-name, .assigned-variable-value {
+    flex: 1;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 6px;
+    font-size: 1rem;
+    background-color: #f8f9fa;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    min-width: 80px;
+}
+
+.assigned-variable-name:focus, .assigned-variable-value:focus {
+    outline: none;
+    border-color: #80bdff;
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
+}
+
+.equals-sign {
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #495057;
+}
+
 .btn-remove {
     background-color: #dc3545;
     color: white;
@@ -610,6 +640,18 @@ header .btn {
         /* スクロール内での配置 */
         margin-bottom: 20px; /* マージンを調整 */
     }
+
+    .assigned-variable-item {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        grid-template-rows: auto auto;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .assigned-variable-item .btn-remove {
+        grid-column: 1 / -1;
+    }
     
     .btn-remove {
         width: 100%;
@@ -862,6 +904,22 @@ header .btn {
         border-color: #007bff;
         box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.35);
     }
+
+    .assigned-variable-name, .assigned-variable-value {
+        background-color: #2c2c2c;
+        border-color: #555;
+        color: #e0e0e0;
+    }
+
+    .assigned-variable-name:focus, .assigned-variable-value:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.35);
+    }
+
+    .equals-sign {
+        color: #e0e0e0;
+    }
+
     .solution-item {
         background-color: #2c2c2c;
         border-left-color: #28a745;

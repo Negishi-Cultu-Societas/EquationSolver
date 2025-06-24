@@ -86,6 +86,7 @@ def solve_equation():
         data = request.get_json()
         equations = data.get('equations', [])
         solve_vars = data.get('solve_vars', [])
+        assigned_vars = data.get('assigned_vars', {})
         
         # 空の方程式を除去
         equations = [eq.strip() for eq in equations if eq.strip()]
@@ -94,16 +95,21 @@ def solve_equation():
         if not equations:
             return jsonify({'error': '少なくとも1つの方程式を入力してください。'})
         
+        # 記号をすべて抽出
+        all_texts = equations + solve_vars + list(assigned_vars.keys())
+        symbol_names = extract_symbols_from_texts(all_texts)
+        
         # 求める変数が空なら自動検知
         if not solve_vars:
-            symbol_names = list(extract_symbols_from_texts(equations))
-            if not symbol_names:
-                return jsonify({'error': '変数が検出できませんでした。'})
-            solve_vars = symbol_names
-        else:
-            all_texts = equations + solve_vars
-            symbol_names = extract_symbols_from_texts(all_texts)
-        
+            detected_symbols = list(extract_symbols_from_texts(equations))
+            # 代入済みの変数は解く対象から外す
+            solve_vars = [s for s in detected_symbols if s not in assigned_vars.keys()]
+            if not solve_vars:
+                if detected_symbols:
+                     return jsonify({'error': '解くべき変数がありません。すべての変数が代入済みです。'})
+                else:
+                     return jsonify({'error': '変数が検出できませんでした。'})
+
         # SymPyの記号を定義
         if symbol_names:
             symbols(','.join(symbol_names))
@@ -114,12 +120,18 @@ def solve_equation():
             eq_str = preprocess_equation(eq_str, symbol_names)
             if '=' in eq_str:
                 left, right = eq_str.split('=')
-                left = sympify(left)
-                right = sympify(right)
-                eq = Eq(left, right)
+                left_expr = sympify(left)
+                right_expr = sympify(right)
+                eq = Eq(left_expr, right_expr)
             else:
                 eq = sympify(eq_str)
             eq_list.append(eq)
+        
+        # 値を代入
+        if assigned_vars:
+            substitutions = {symbols(k): sympify(v) for k, v in assigned_vars.items() if v is not None and str(v).strip() != ''}
+            if substitutions:
+                eq_list = [eq.subs(substitutions) for eq in eq_list]
         
         # 変数の記号を作成
         vars_symbols = [symbols(v) for v in solve_vars]
@@ -194,6 +206,31 @@ def auto_detect_vars():
         
         symbol_names = list(extract_symbols_from_texts(equations))
         return jsonify({'variables': symbol_names})
+        
+    except Exception as e:
+        return jsonify({'error': f'変数検出エラー: {str(e)}'})
+
+@app.route('/auto_detect_assignable_vars', methods=['POST'])
+def auto_detect_assignable_vars():
+    """方程式から代入可能な変数を自動検出"""
+    try:
+        data = request.get_json()
+        equations = data.get('equations', [])
+        solve_vars = data.get('solve_vars', [])
+        
+        equations = [eq.strip() for eq in equations if eq.strip()]
+        solve_vars = [var.strip() for var in solve_vars if var.strip()]
+        
+        if not equations:
+            return jsonify({'variables': []})
+        
+        # 方程式からすべての変数を検出
+        all_vars = extract_symbols_from_texts(equations)
+        
+        # 解く変数として指定されているものを除外
+        assignable_vars = [v for v in all_vars if v not in solve_vars]
+        
+        return jsonify({'variables': assignable_vars})
         
     except Exception as e:
         return jsonify({'error': f'変数検出エラー: {str(e)}'})

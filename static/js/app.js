@@ -1,8 +1,11 @@
 // DOM要素の取得
 const equationsContainer = document.getElementById('equations-container');
 const variablesContainer = document.getElementById('variables-container');
+const assignedVariablesContainer = document.getElementById('assigned-variables-container');
 const addEquationBtn = document.getElementById('add-equation-btn');
 const addVariableBtn = document.getElementById('add-variable-btn');
+const addAssignedVariableBtn = document.getElementById('add-assigned-variable-btn');
+const autoDetectAssignedBtn = document.getElementById('auto-detect-assigned-btn');
 const autoDetectBtn = document.getElementById('auto-detect-btn');
 const solveBtn = document.getElementById('solve-btn');
 const acBtn = document.getElementById('ac-btn');
@@ -17,6 +20,7 @@ const loading = document.getElementById('loading');
 // 方程式と変数のカウンター
 let equationCount = 0;
 let variableCount = 0;
+let assignedVariableCount = 0;
 
 // モバイルデバイス検出
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
@@ -25,6 +29,7 @@ const isTouchDevice = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
 // 初期化
 document.addEventListener('DOMContentLoaded', function() {
     addEquation(); // 最初の方程式欄を追加
+    addAssignedVariable(); // 最初の変数代入欄を追加
     setupEventListeners();
     setupMobileOptimizations();
 });
@@ -116,6 +121,8 @@ function setupEventListeners() {
     // ボタンイベント
     addEquationBtn.addEventListener('click', addEquation);
     addVariableBtn.addEventListener('click', addVariable);
+    addAssignedVariableBtn.addEventListener('click', () => addAssignedVariable());
+    autoDetectAssignedBtn.addEventListener('click', autoDetectAssignableVariables);
     autoDetectBtn.addEventListener('click', autoDetectVariables);
     solveBtn.addEventListener('click', solveEquations);
     acBtn.addEventListener('click', allClear);
@@ -129,6 +136,9 @@ function setupEventListeners() {
             e.stopPropagation();
         }, { passive: true });
         addVariableBtn.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+        }, { passive: true });
+        addAssignedVariableBtn.addEventListener('touchstart', function(e) {
             e.stopPropagation();
         }, { passive: true });
         autoDetectBtn.addEventListener('touchstart', function(e) {
@@ -246,16 +256,91 @@ function addVariable() {
     }
 }
 
-// 方程式入力欄を削除
-function removeEquation(button) {
-    const equationItem = button.parentElement;
-    equationItem.remove();
+// 変数代入欄を追加
+function addAssignedVariable(name = '') {
+    assignedVariableCount++;
+    const item = document.createElement('div');
+    item.className = 'assigned-variable-item';
+
+    const inputAttributes = isMobile ?
+        'autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"' :
+        '';
+
+    item.innerHTML = `
+        <input type="text" class="assigned-variable-name" placeholder="変数名 (例: a)" value="${name}" ${inputAttributes} inputmode="text">
+        <span class="equals-sign">=</span>
+        <input type="text" class="assigned-variable-value" placeholder="値 (例: 1)" ${inputAttributes} inputmode="decimal">
+        <button type="button" class="btn btn-remove" onclick="removeAssignedVariable(this)">削除</button>
+    `;
+
+    assignedVariablesContainer.appendChild(item);
 }
 
-// 変数入力欄を削除
-function removeVariable(button) {
-    const variableItem = button.parentElement;
-    variableItem.remove();
+// 変数代入欄を削除
+function removeAssignedVariable(button) {
+    const item = button.parentElement;
+    item.remove();
+}
+
+// 代入変数の自動検出
+async function autoDetectAssignableVariables() {
+    const equations = getEquations();
+    const solve_vars = getVariables();
+
+    if (equations.length === 0) {
+        showError(
+            '方程式を入力してから変数の自動検出を行ってください。',
+            'input-error',
+            '少なくとも1つの方程式を入力してから「自動追加」ボタンを押してください。'
+        );
+        return;
+    }
+
+    try {
+        showLoading(true);
+        const response = await fetch('/auto_detect_assignable_vars', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                equations: equations,
+                solve_vars: solve_vars
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.error) {
+            showError(
+                data.error,
+                'variable-error',
+                '方程式に変数が含まれているか確認してください。'
+            );
+        } else {
+            assignedVariablesContainer.innerHTML = '';
+            assignedVariableCount = 0;
+
+            if (data.variables.length > 0) {
+                data.variables.forEach(variable => {
+                    addAssignedVariable(variable);
+                });
+            } else {
+                addAssignedVariable();
+            }
+
+            hideError();
+        }
+    } catch (error) {
+        showError(
+            '変数検出中にエラーが発生しました。',
+            'calculation-error',
+            'ネットワーク接続を確認するか、しばらくしてから再試行してください。'
+        );
+        console.error('Error:', error);
+    } finally {
+        showLoading(false);
+    }
 }
 
 // 全クリア
@@ -264,6 +349,8 @@ function allClear() {
     equationsContainer.innerHTML = '';
     // 変数欄をクリア
     variablesContainer.innerHTML = '';
+    // 代入変数欄をクリア
+    assignedVariablesContainer.innerHTML = '';
     // 結果をクリア
     resultContent.innerHTML = '';
     // エラーメッセージをクリア
@@ -271,8 +358,11 @@ function allClear() {
     // カウンターをリセット
     equationCount = 0;
     variableCount = 0;
+    assignedVariableCount = 0;
     // 最初の方程式欄を追加
     addEquation();
+    // 最初の変数代入欄を追加
+    addAssignedVariable();
 }
 
 // 変数の自動検出
@@ -340,6 +430,7 @@ async function autoDetectVariables() {
 async function solveEquations() {
     const equations = getEquations();
     const variables = getVariables();
+    const assignedVars = getAssignedVariables();
     
     if (equations.length === 0) {
         showError(
@@ -359,7 +450,8 @@ async function solveEquations() {
             },
             body: JSON.stringify({
                 equations: equations,
-                solve_vars: variables
+                solve_vars: variables,
+                assigned_vars: assignedVars
             })
         });
         
@@ -422,6 +514,23 @@ function getVariables() {
     });
     return variables;
 }
+
+// 入力された代入変数を取得
+function getAssignedVariables() {
+    const assignedVars = {};
+    const items = document.querySelectorAll('.assigned-variable-item');
+    items.forEach(item => {
+        const nameInput = item.querySelector('.assigned-variable-name');
+        const valueInput = item.querySelector('.assigned-variable-value');
+        const name = nameInput.value.trim();
+        const value = valueInput.value.trim();
+        if (name && value) {
+            assignedVars[name] = value;
+        }
+    });
+    return assignedVars;
+}
+
 
 // 結果を表示
 function displayResults(solutions) {
