@@ -279,7 +279,11 @@ function allClear() {
 async function autoDetectVariables() {
     const equations = getEquations();
     if (equations.length === 0) {
-        showError('方程式を入力してから変数の自動検出を行ってください。');
+        showError(
+            '方程式を入力してから変数の自動検出を行ってください。', 
+            'input-error',
+            '少なくとも1つの方程式を入力してから「変数自動検出」ボタンを押してください。'
+        );
         return;
     }
     
@@ -296,7 +300,11 @@ async function autoDetectVariables() {
         const data = await response.json();
         
         if (data.error) {
-            showError(data.error);
+            showError(
+                data.error, 
+                'variable-error',
+                '方程式に変数が含まれているか確認してください。例: x, y, z など'
+            );
         } else {
             // 既存の変数欄をクリア
             variablesContainer.innerHTML = '';
@@ -317,7 +325,11 @@ async function autoDetectVariables() {
             hideError();
         }
     } catch (error) {
-        showError('変数検出中にエラーが発生しました。');
+        showError(
+            '変数検出中にエラーが発生しました。', 
+            'calculation-error',
+            'ネットワーク接続を確認するか、しばらくしてから再試行してください。'
+        );
         console.error('Error:', error);
     } finally {
         showLoading(false);
@@ -330,7 +342,11 @@ async function solveEquations() {
     const variables = getVariables();
     
     if (equations.length === 0) {
-        showError('少なくとも1つの方程式を入力してください。');
+        showError(
+            '少なくとも1つの方程式を入力してください。', 
+            'input-error',
+            '方程式を入力してから「解を求める」ボタンを押してください。\n例: x**2 + 2*x + 1 = 0'
+        );
         return;
     }
     
@@ -350,14 +366,30 @@ async function solveEquations() {
         const data = await response.json();
         
         if (data.error) {
-            showError(data.error);
+            // エラーメッセージの詳細分析
+            let errorType = 'calculation-error';
+            let errorDetails = '方程式の記法を確認してください。記号対応表を参考にしてください。';
+            
+            if (data.error.includes('変数') || data.error.includes('変数が検出')) {
+                errorType = 'variable-error';
+                errorDetails = '変数名は英字で始まる必要があります（例: x, y, abc）。';
+            } else if (data.error.includes('入力') || data.error.includes('方程式')) {
+                errorType = 'input-error';
+                errorDetails = '方程式の書き方を確認してください。\n例: x**2 + 2*x + 1 = 0\n例: 2*x + y = 5';
+            }
+            
+            showError(data.error, errorType, errorDetails);
             resultContent.innerHTML = '';
         } else {
             displayResults(data.solutions);
             hideError();
         }
     } catch (error) {
-        showError('計算中にエラーが発生しました。');
+        showError(
+            '計算中にエラーが発生しました。', 
+            'calculation-error',
+            'ネットワーク接続を確認するか、しばらくしてから再試行してください。\n問題が続く場合は方程式の記法を確認してください。'
+        );
         console.error('Error:', error);
         resultContent.innerHTML = '';
     } finally {
@@ -424,15 +456,52 @@ function displayResults(solutions) {
     }
 }
 
-// エラーメッセージを表示
-function showError(message) {
-    errorMessage.textContent = message;
+// エラーメッセージを表示（強化版）
+function showError(message, type = 'calculation-error', details = null) {
+    // エラーメッセージのメインテキストを設定
+    errorMessage.innerHTML = `<span class="error-main">${message}</span>`;
+    
+    // 詳細情報がある場合は追加
+    if (details) {
+        const detailsDiv = document.createElement('div');
+        detailsDiv.className = 'error-details';
+        detailsDiv.textContent = details;
+        errorMessage.appendChild(detailsDiv);
+    }
+    
+    // 既存のエラータイプクラスを削除
+    errorMessage.classList.remove('input-error', 'variable-error', 'calculation-error');
+    
+    // 新しいエラータイプクラスを追加
+    errorMessage.classList.add(type);
+    
+    // エラーメッセージを表示
     errorMessage.style.display = 'block';
+    
+    // スクロールしてエラーメッセージを表示
+    errorMessage.scrollIntoView({ 
+        behavior: 'smooth', 
+        block: 'center' 
+    });
+    
+    // 3秒後に振動効果を追加（モバイル対応）
+    if (navigator.vibrate) {
+        navigator.vibrate([100, 50, 100]);
+    }
+    
+    // 5秒後に自動的にエラーメッセージの強調を解除（メッセージは残す）
+    setTimeout(() => {
+        if (errorMessage.style.display === 'block') {
+            errorMessage.style.opacity = '0.7';
+        }
+    }, 5000);
 }
 
 // エラーメッセージを非表示
 function hideError() {
     errorMessage.style.display = 'none';
+    errorMessage.style.opacity = '1';
+    errorMessage.classList.remove('input-error', 'variable-error', 'calculation-error');
 }
 
 // ローディング表示/非表示

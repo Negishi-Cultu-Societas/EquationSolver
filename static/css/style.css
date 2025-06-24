@@ -7,9 +7,9 @@
 
 body {
     font-family: 'Yu Gothic UI', 'Hiragino Kaku Gothic ProN', 'Meiryo', sans-serif;
-    background-color: #f7f7f7;
-    color: #333;
-    line-height: 1.6;
+    background-color: #f8f9fa; /* より明るいグレーに */
+    color: #212529; /* より濃いグレーに */
+    line-height: 1.7;
     /* スクロール許可 */
     overflow-y: auto;
     overflow-x: hidden;
@@ -22,7 +22,7 @@ body {
 .container {
     max-width: 800px;
     margin: 0 auto;
-    padding: 20px;
+    padding: 40px 20px; /* 上下のパディングを増やす */
     /* スクロール可能にする */
     min-height: 100vh;
     overflow-y: auto;
@@ -35,15 +35,15 @@ header {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
-    margin-bottom: 30px;
+    margin-bottom: 40px; /* マージンを増やす */
     padding: 20px 0;
-    border-bottom: 2px solid #e0e0e0;
+    border-bottom: 1px solid #dee2e6; /* 細い線に */
 }
 
 header h1 {
-    color: #1976d2;
-    font-size: 2.2em;
-    font-weight: 600;
+    color: #343a40; /* 落ち着いた色に */
+    font-size: 2.5em; /* 少し大きく */
+    font-weight: 700; /* 少し太く */
     text-align: left;
     margin: 0;
 }
@@ -74,116 +74,123 @@ header .btn {
 
 /* ボタンスタイル */
 .btn {
-    padding: 10px 20px;
+    padding: 12px 24px; /* パディングを調整 */
     border: none;
-    border-radius: 5px;
+    border-radius: 6px; /* 角丸を調整 */
     cursor: pointer;
-    font-size: 14px;
-    font-weight: 500;
-    transition: all 0.3s ease;
+    font-size: 1rem; /* フォントサイズをremに */
+    font-weight: 600; /* 少し太く */
+    transition: all 0.2s ease-in-out; /* トランジションを調整 */
     text-decoration: none;
     display: inline-block;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05); /* 繊細な影 */
+}
+
+.btn:hover {
+    transform: translateY(-2px); /* ホバー時に少し浮き上がる */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1); /* 影を濃くする */
 }
 
 .btn-primary {
-    background-color: #1976d2;
+    background-color: #007bff; /* モダンな青に */
     color: white;
 }
 
 .btn-primary:hover {
-    background-color: #1565c0;
+    background-color: #0069d9;
 }
 
 .btn-secondary {
-    background-color: #757575;
+    background-color: #6c757d; /* モダンなグレーに */
     color: white;
 }
 
 .btn-secondary:hover {
-    background-color: #616161;
+    background-color: #5a6268;
 }
 
 .btn-danger {
-    background-color: #d32f2f;
+    background-color: #dc3545; /* モダンな赤に */
     color: white;
 }
 
 .btn-danger:hover {
-    background-color: #b71c1c;
+    background-color: #c82333;
 }
 
 .btn-info {
-    background-color: #0288d1;
+    background-color: #17a2b8; /* モダンなシアンに */
     color: white;
 }
 
 .btn-info:hover {
-    background-color: #0277bd;
+    background-color: #138496;
 }
 
 .btn-solve {
-    background-color: #4caf50;
+    background-color: #28a745; /* モダンな緑に */
     color: white;
-    font-size: 18px;
+    font-size: 1.25rem;
     padding: 15px 30px;
-    font-weight: 600;
+    font-weight: 700;
 }
 
 .btn-solve:hover {
-    background-color: #45a049;
+    background-color: #218838;
 }
 
 /* 小さいボタン用 */
 .btn-sm {
-    padding: 6px 12px;
-    font-size: 12px;
+    padding: 8px 16px; /* パディングを調整 */
+    font-size: 0.875rem;
     border-radius: 4px;
 }
 
 /* 入力セクション */
 .input-section {
-    background-color: #e3eafc;
-    padding: 20px;
-    margin-bottom: 20px;
+    background-color: #ffffff; /* 背景を白に */
+    padding: 30px; /* パディングを増やす */
+    margin-bottom: 30px; /* マージンを調整 */
     border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border: 1px solid #e9ecef; /* 枠線を追加 */
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03); /* 影をさらに繊細に */
 }
 
 .section-header {
     display: flex;
     align-items: center;
-    margin-bottom: 15px;
+    margin-bottom: 20px; /* マージンを増やす */
     gap: 15px;
 }
 
 .section-header label {
     font-weight: 600;
-    color: #333;
-    font-size: 16px;
+    color: #495057; /* 少し柔らかい色に */
+    font-size: 1.1rem;
 }
 
 /* 入力フィールド */
 .equation-item, .variable-item {
     display: flex;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 15px; /* マージンを増やす */
     gap: 10px;
 }
 
 .equation-input, .variable-input {
     flex: 1;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 4px;
-    font-size: 14px;
-    background-color: white;
-    transition: border-color 0.3s ease;
+    padding: 12px 15px; /* パディングを調整 */
+    border: 1px solid #ced4da; /* 枠線の色を調整 */
+    border-radius: 6px; /* 角丸をボタンと合わせる */
+    font-size: 1rem;
+    background-color: #f8f9fa; /* 少し背景色をつける */
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .equation-input:focus, .variable-input:focus {
     outline: none;
-    border-color: #1976d2;
-    box-shadow: 0 0 0 2px rgba(25, 118, 210, 0.2);
+    border-color: #80bdff; /* フォーカス時の色を調整 */
+    box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25); /* フォーカス時の影 */
 }
 
 .equation-input {
@@ -195,46 +202,48 @@ header .btn {
 }
 
 .btn-remove {
-    background-color: #d32f2f;
+    background-color: #dc3545;
     color: white;
     padding: 8px 12px;
-    font-size: 12px;
+    font-size: 0.875rem;
     min-width: 60px;
+    border-radius: 6px;
 }
 
 .btn-remove:hover {
-    background-color: #b71c1c;
+    background-color: #c82333;
 }
 
 /* 解を求めるセクション */
 .solve-section {
     text-align: center;
-    margin: 30px 0;
+    margin: 40px 0; /* マージンを増やす */
 }
 
 /* 結果セクション */
 .result-section {
     margin-top: 30px;
-    padding: 20px;
+    padding: 30px; /* パディングを増やす */
     background-color: white;
     border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e9ecef;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.03);
     min-height: 100px;
 }
 
 .solution-item {
-    margin-bottom: 20px;
-    padding: 15px;
-    background-color: #f9f9f9;
+    margin-bottom: 25px; /* マージンを増やす */
+    padding: 20px; /* パディングを増やす */
+    background-color: #f8f9fa;
     border-radius: 6px;
-    border-left: 4px solid #4caf50;
+    border-left: 5px solid #28a745; /* 線の太さと色を調整 */
 }
 
 .solution-label {
-    font-weight: 600;
-    color: #2e7d32;
-    margin-bottom: 10px;
-    font-size: 16px;
+    font-weight: 700; /* 太くする */
+    color: #28a745; /* 線の色と合わせる */
+    margin-bottom: 15px; /* マージンを増やす */
+    font-size: 1.1rem;
 }
 
 .solution-vars {
@@ -244,22 +253,149 @@ header .btn {
 }
 
 .solution-var {
-    background-color: white;
+    background-color: #e9ecef; /* 背景色を調整 */
     padding: 10px 15px;
-    border-radius: 4px;
-    border: 1px solid #e0e0e0;
-    font-size: 16px;
+    border-radius: 6px;
+    border: 1px solid #ced4da; /* 枠線を調整 */
+    font-size: 1rem;
+    font-family: 'Consolas', 'Monaco', monospace; /* フォントを等幅に */
 }
 
 /* エラーメッセージ */
 .error-message {
-    background-color: #ffebee;
-    color: #c62828;
-    padding: 15px;
-    border-radius: 4px;
-    margin: 20px 0;
-    border-left: 4px solid #d32f2f;
+    background-color: #f8d7da;
+    color: #721c24;
+    padding: 25px 30px;
+    border-radius: 12px;
+    margin: 30px 0;
+    border: 3px solid #dc3545;
+    border-left: 8px solid #dc3545;
     display: none;
+    font-size: 1.15rem;
+    font-weight: 700;
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+    animation: errorPulse 0.6s ease-in-out, shake 0.5s ease-in-out;
+    position: relative;
+    z-index: 100;
+    transform: translateY(0);
+    transition: all 0.3s ease;
+}
+
+/* エラーメッセージのメインテキスト */
+.error-main {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: 800;
+    margin-bottom: 8px;
+}
+
+/* エラーメッセージのアイコン */
+.error-message::before {
+    content: "⚠️ ";
+    font-size: 1.4em;
+    margin-right: 10px;
+    display: inline-block;
+    animation: bounce 1s infinite;
+}
+
+/* エラーメッセージの詳細 */
+.error-details {
+    margin-top: 15px;
+    padding: 15px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    font-family: 'Consolas', 'Monaco', monospace;
+    white-space: pre-line;
+    line-height: 1.6;
+    border-left: 4px solid #dc3545;
+}
+
+/* エラーアニメーション */
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    10%, 30%, 50%, 70%, 90% { transform: translateX(-8px); }
+    20%, 40%, 60%, 80% { transform: translateX(8px); }
+}
+
+@keyframes errorPulse {
+    0% { 
+        transform: scale(0.95);
+        opacity: 0;
+    }
+    50% {
+        transform: scale(1.02);
+        opacity: 0.9;
+    }
+    100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-5px);
+    }
+    60% {
+        transform: translateY(-3px);
+    }
+}
+
+/* エラータイプ別のスタイル */
+.error-message.input-error {
+    border-color: #fd7e14;
+    border-left-color: #fd7e14;
+    background-color: #fff3cd;
+    color: #856404;
+    box-shadow: 0 6px 20px rgba(253, 126, 20, 0.3);
+}
+
+.error-message.input-error::before {
+    content: "📝 ";
+}
+
+.error-message.input-error .error-details {
+    border-left-color: #fd7e14;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.error-message.variable-error {
+    border-color: #6f42c1;
+    border-left-color: #6f42c1;
+    background-color: #e2d9f3;
+    color: #493057;
+    box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
+}
+
+.error-message.variable-error::before {
+    content: "🔍 ";
+}
+
+.error-message.variable-error .error-details {
+    border-left-color: #6f42c1;
+    background-color: rgba(255, 255, 255, 0.9);
+}
+
+.error-message.calculation-error {
+    border-color: #dc3545;
+    border-left-color: #dc3545;
+    background-color: #f8d7da;
+    color: #721c24;
+    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
+}
+
+.error-message.calculation-error::before {
+    content: "💥 ";
+}
+
+.error-message.calculation-error .error-details {
+    border-left-color: #dc3545;
+    background-color: rgba(255, 255, 255, 0.8);
 }
 
 /* ローディング */
@@ -271,7 +407,7 @@ header .btn {
 
 .spinner {
     border: 4px solid #f3f3f3;
-    border-top: 4px solid #1976d2;
+    border-top: 4px solid #007bff; /* スピナーの色をメインカラーに */
     border-radius: 50%;
     width: 40px;
     height: 40px;
@@ -293,7 +429,7 @@ header .btn {
     top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0,0,0,0.4); /* 背景を少し薄く */
 }
 
 .modal-content {
@@ -303,30 +439,32 @@ header .btn {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    padding: 30px;
+    padding: 40px; /* パディングを増やす */
     border-radius: 8px;
     width: 90%;
     max-width: 600px;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3); /* 影を調整 */
 }
 
 .close {
     position: absolute;
     right: 20px;
     top: 15px;
-    font-size: 28px;
+    font-size: 32px; /* 少し大きく */
     font-weight: bold;
     cursor: pointer;
-    color: #aaa;
+    color: #6c757d; /* グレーに */
+    transition: color 0.2s ease;
 }
 
 .close:hover {
-    color: #000;
+    color: #343a40; /* 濃いグレーに */
 }
 
 .modal-content h2 {
-    margin-bottom: 20px;
-    color: #1976d2;
+    margin-bottom: 25px; /* マージンを増やす */
+    color: #343a40; /* ヘッダータイトルと同じ色に */
+    font-weight: 700;
 }
 
 .symbols-table {
@@ -337,25 +475,26 @@ header .btn {
 
 .symbols-table th,
 .symbols-table td {
-    border: 1px solid #ddd;
-    padding: 12px;
+    border: 1px solid #dee2e6; /* 枠線の色を調整 */
+    padding: 12px 15px; /* パディングを調整 */
     text-align: left;
 }
 
 .symbols-table th {
-    background-color: #f5f5f5;
+    background-color: #f8f9fa; /* 背景色を調整 */
     font-weight: 600;
-    color: #333;
+    color: #495057; /* 文字色を調整 */
 }
 
 .symbols-table tr:nth-child(even) {
-    background-color: #f9f9f9;
+    background-color: #ffffff; /* 縞模様をなくす */
 }
 
 .symbols-table code {
-    background-color: #f4f4f4;
-    padding: 2px 6px;
-    border-radius: 3px;
+    background-color: #e9ecef; /* 背景色を調整 */
+    color: #c7254e; /* 文字色を調整 */
+    padding: 3px 6px;
+    border-radius: 4px;
     font-family: 'Consolas', 'Monaco', monospace;
 }
 
@@ -382,10 +521,47 @@ header .btn {
     }
     
     .container {
-        padding: 10px;
+        padding: 15px; /* パディングを調整 */
         /* スクロール確保 */
         min-height: calc(100vh - 20px);
         overflow: visible;
+    }
+    
+    /* エラーメッセージをモバイルで強化 */
+    .error-message {
+        position: fixed;
+        top: 20px;
+        left: 15px;
+        right: 15px;
+        z-index: 1000;
+        margin: 0;
+        padding: 20px;
+        border-radius: 12px;
+        font-size: 1rem;
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+        animation: mobileErrorSlide 0.6s ease-out, shake 0.5s ease-in-out;
+    }
+    
+    .error-message .error-main {
+        font-size: 1.1rem;
+    }
+    
+    .error-message .error-details {
+        font-size: 0.9rem;
+        margin-top: 12px;
+        padding: 12px;
+    }
+    
+    /* モバイル用エラーアニメーション */
+    @keyframes mobileErrorSlide {
+        0% {
+            transform: translateY(-100%);
+            opacity: 0;
+        }
+        100% {
+            transform: translateY(0);
+            opacity: 1;
+        }
     }
     
     header {
@@ -393,13 +569,13 @@ header .btn {
         flex-direction: column;
         gap: 15px;
         text-align: center;
-        padding: 15px 0;
+        padding: 20px 0; /* パディングを調整 */
     }
     
     header h1 {
-        font-size: 1.8em;
-        margin-bottom: 10px;
-        text-align: left;
+        font-size: 2em; /* フォントサイズを調整 */
+        margin-bottom: 15px; /* マージンを調整 */
+        text-align: center; /* 中央揃えに */
     }
     
     #ac-btn {
@@ -432,13 +608,13 @@ header .btn {
         align-items: stretch;
         gap: 10px;
         /* スクロール内での配置 */
-        margin-bottom: 15px;
+        margin-bottom: 20px; /* マージンを調整 */
     }
     
     .btn-remove {
         width: 100%;
         padding: 12px;
-        font-size: 14px;
+        font-size: 1rem; /* フォントサイズを調整 */
         /* タッチ操作許可 */
         touch-action: manipulation;
     }
@@ -446,7 +622,7 @@ header .btn {
     .btn-solve {
         width: 100%;
         padding: 18px;
-        font-size: 20px;
+        font-size: 1.25rem; /* フォントサイズを調整 */
         margin: 20px 0;
         /* タッチ操作許可 */
         touch-action: manipulation;
@@ -459,7 +635,7 @@ header .btn {
     
     .solution-var {
         padding: 15px;
-        font-size: 14px;
+        font-size: 1rem; /* フォントサイズを調整 */
         word-break: break-all;
         /* 数式のスクロール許可 */
         overflow-x: auto;
@@ -469,7 +645,7 @@ header .btn {
     .modal-content {
         width: 95%;
         max-width: 95vw;
-        padding: 15px;
+        padding: 20px; /* パディングを調整 */
         max-height: 90vh;
         overflow-y: auto;
         top: 50%;
@@ -478,7 +654,7 @@ header .btn {
     }
     
     .symbols-table {
-        font-size: 12px;
+        font-size: 14px; /* フォントサイズを調整 */
         /* テーブルのスクロール */
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -486,7 +662,7 @@ header .btn {
     
     .symbols-table th,
     .symbols-table td {
-        padding: 8px 4px;
+        padding: 10px 8px; /* パディングを調整 */
         white-space: nowrap;
     }
 }
@@ -494,45 +670,45 @@ header .btn {
 /* 小さなスマートフォン対応 */
 @media (max-width: 480px) {
     .container {
-        padding: 5px;
+        padding: 10px; /* パディングを調整 */
     }
     
     header h1 {
-        font-size: 1.5em;
+        font-size: 1.8em; /* フォントサイズを調整 */
     }
     
     .input-section {
-        padding: 15px;
-        margin-bottom: 15px;
+        padding: 20px; /* パディングを調整 */
+        margin-bottom: 20px; /* マージンを調整 */
     }
     
     .equation-input, .variable-input {
-        padding: 12px;
+        padding: 15px; /* パディングを調整 */
         font-size: 16px;
     }
     
     .btn {
-        padding: 12px 15px;
-        font-size: 14px;
+        padding: 15px 20px; /* パディングを調整 */
+        font-size: 1rem; /* フォントサイズを調整 */
     }
     
     .btn-solve {
-        padding: 15px;
-        font-size: 18px;
+        padding: 18px; /* パディングを調整 */
+        font-size: 1.1rem; /* フォントサイズを調整 */
     }
     
     .modal-content {
-        padding: 10px;
-        margin: 1% auto;
+        padding: 15px;
+        margin: 2% auto;
     }
     
     .symbols-table {
-        font-size: 10px;
+        font-size: 12px;
     }
     
     .symbols-table th,
     .symbols-table td {
-        padding: 6px 2px;
+        padding: 8px 4px;
     }
 }
 
@@ -549,8 +725,8 @@ header .btn {
     header {
         flex-direction: column;
         align-items: stretch;
-        gap: 10px;
-        padding: 12px 0;
+        gap: 15px; /* ギャップを調整 */
+        padding: 15px 0; /* パディングを調整 */
     }
     .header-btns {
         justify-content: center;
@@ -568,12 +744,13 @@ header .btn {
         margin: 0;
     }
     h1 {
-        font-size: 1.2em;
+        font-size: 1.5em; /* フォントサイズを調整 */
         margin-bottom: 0;
+        text-align: center; /* 中央揃えに */
     }
     .btn-sm {
-        font-size: 11px;
-        padding: 5px 10px;
+        font-size: 0.875rem; /* フォントサイズを調整 */
+        padding: 6px 12px;
     }
 }
 
@@ -595,28 +772,28 @@ header .btn {
     }
     
     .btn {
-        min-height: 44px; /* Appleのタッチターゲット推奨サイズ */
-        padding: 12px 20px;
+        min-height: 48px; /* Appleのタッチターゲット推奨サイズ */
+        padding: 12px 24px; /* パディングを調整 */
         /* タッチ操作許可 */
         touch-action: manipulation;
     }
     
     .btn-remove {
-        min-height: 44px;
+        min-height: 48px; /* Appleのタッチターゲット推奨サイズ */
         padding: 12px;
         touch-action: manipulation;
     }
     
     .equation-input, .variable-input {
-        min-height: 44px;
-        padding: 12px;
+        min-height: 48px; /* Appleのタッチターゲット推奨サイズ */
+        padding: 15px; /* パディングを調整 */
         border-radius: 8px;
         /* 入力フィールドでのタッチ操作 */
         touch-action: manipulation;
     }
     
     .close {
-        font-size: 32px;
+        font-size: 36px; /* サイズを調整 */
         padding: 10px;
         touch-action: manipulation;
     }
@@ -632,7 +809,7 @@ header .btn {
 @supports (-webkit-touch-callout: none) {
     .equation-input, .variable-input {
         font-size: 16px !important; /* ズーム防止 */
-        border-radius: 0; /* iOS角丸リセット */
+        border-radius: 8px !important; /* iOS角丸リセットを上書き */
     }
       .btn {
         -webkit-appearance: none;
@@ -659,5 +836,68 @@ header .btn {
 
 /* ダークモード対応（準備） */
 @media (prefers-color-scheme: dark) {
-    /* 将来的にダークモード対応時に使用 */
+    body {
+        background-color: #121212;
+        color: #e0e0e0;
+    }
+    header {
+        border-bottom-color: #333;
+    }
+    header h1, .modal-content h2 {
+        color: #ffffff;
+    }
+    .input-section, .result-section, .modal-content {
+        background-color: #1e1e1e;
+        border-color: #333;
+    }
+    .section-header label {
+        color: #e0e0e0;
+    }
+    .equation-input, .variable-input {
+        background-color: #2c2c2c;
+        border-color: #555;
+        color: #e0e0e0;
+    }
+    .equation-input:focus, .variable-input:focus {
+        border-color: #007bff;
+        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.35);
+    }
+    .solution-item {
+        background-color: #2c2c2c;
+        border-left-color: #28a745;
+    }
+    .solution-label {
+        color: #28a745;
+    }
+    .solution-var {
+        background-color: #333;
+        border-color: #555;
+        color: #e0e0e0;
+    }
+    .error-message {
+        background-color: #2c1d1f;
+        color: #f8d7da;
+        border-left-color: #dc3545;
+    }
+    .spinner {
+        border-top-color: #007bff;
+    }
+    .close {
+        color: #aaa;
+    }
+    .close:hover {
+        color: #fff;
+    }
+    .symbols-table th {
+        background-color: #2c2c2c;
+        border-color: #555;
+        color: #e0e0e0;
+    }
+    .symbols-table td {
+        border-color: #555;
+    }
+    .symbols-table code {
+        background-color: #333;
+        color: #f06292;
+    }
 }
