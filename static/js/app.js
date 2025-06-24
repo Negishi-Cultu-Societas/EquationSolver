@@ -15,6 +15,8 @@ const closeModal = document.querySelector('.close');
 const resultSection = document.getElementById('result-section');
 const resultContent = document.getElementById('result-content');
 const errorMessage = document.getElementById('error-message');
+const errorContent = document.getElementById('error-content');
+const errorCloseBtn = document.getElementById('error-close-btn');
 const loading = document.getElementById('loading');
 
 // 方程式と変数のカウンター
@@ -128,6 +130,7 @@ function setupEventListeners() {
     acBtn.addEventListener('click', allClear);
     symbolsBtn.addEventListener('click', showSymbolsModal);
     closeModal.addEventListener('click', hideSymbolsModal);
+    errorCloseBtn.addEventListener('click', hideError);
     
     // タッチデバイス対応（passive: trueでスクロールパフォーマンス向上）
     if (isTouchDevice) {
@@ -149,11 +152,13 @@ function setupEventListeners() {
         }, { passive: true });
         acBtn.addEventListener('touchstart', function(e) {
             e.stopPropagation();
-        }, { passive: true });
-        symbolsBtn.addEventListener('touchstart', function(e) {
+        }, { passive: true });        symbolsBtn.addEventListener('touchstart', function(e) {
             e.stopPropagation();
         }, { passive: true });
         closeModal.addEventListener('touchstart', function(e) {
+            e.stopPropagation();
+        }, { passive: true });
+        errorCloseBtn.addEventListener('touchstart', function(e) {
             e.stopPropagation();
         }, { passive: true });
     }
@@ -567,15 +572,15 @@ function displayResults(solutions) {
 
 // エラーメッセージを表示（強化版）
 function showError(message, type = 'calculation-error', details = null) {
-    // エラーメッセージのメインテキストを設定
-    errorMessage.innerHTML = `<span class="error-main">${message}</span>`;
+    // エラーコンテンツのメインテキストを設定
+    errorContent.innerHTML = `<span class="error-main">${message}</span>`;
     
     // 詳細情報がある場合は追加
     if (details) {
         const detailsDiv = document.createElement('div');
         detailsDiv.className = 'error-details';
         detailsDiv.textContent = details;
-        errorMessage.appendChild(detailsDiv);
+        errorContent.appendChild(detailsDiv);
     }
     
     // 既存のエラータイプクラスを削除
@@ -586,6 +591,7 @@ function showError(message, type = 'calculation-error', details = null) {
     
     // エラーメッセージを表示
     errorMessage.style.display = 'block';
+    errorMessage.style.opacity = '1';
     
     // スクロールしてエラーメッセージを表示
     errorMessage.scrollIntoView({ 
@@ -598,12 +604,12 @@ function showError(message, type = 'calculation-error', details = null) {
         navigator.vibrate([100, 50, 100]);
     }
     
-    // 5秒後に自動的にエラーメッセージの強調を解除（メッセージは残す）
+    // 10秒後に自動的にエラーメッセージの強調を解除（メッセージは残す）
     setTimeout(() => {
         if (errorMessage.style.display === 'block') {
             errorMessage.style.opacity = '0.7';
         }
-    }, 5000);
+    }, 10000);
 }
 
 // エラーメッセージを非表示
@@ -611,6 +617,8 @@ function hideError() {
     errorMessage.style.display = 'none';
     errorMessage.style.opacity = '1';
     errorMessage.classList.remove('input-error', 'variable-error', 'calculation-error');
+    // エラーコンテンツもクリア
+    errorContent.innerHTML = '';
 }
 
 // ローディング表示/非表示

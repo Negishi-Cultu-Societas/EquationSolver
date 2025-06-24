@@ -289,6 +289,8 @@ header .btn {
     border: 1px solid #ced4da; /* 枠線を調整 */
     font-size: 1rem;
     font-family: 'Consolas', 'Monaco', monospace; /* フォントを等幅に */
+    word-break: break-all;
+    overflow-x: auto;
 }
 
 /* エラーメッセージ */
@@ -342,6 +344,30 @@ header .btn {
     border-left: 4px solid #dc3545;
 }
 
+/* エラーメッセージの閉じるボタン */
+.error-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #721c24;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.error-close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 1;
+}
+
 /* エラーアニメーション */
 @keyframes shake {
     0%, 100% { transform: translateX(0); }
@@ -350,82 +376,15 @@ header .btn {
 }
 
 @keyframes errorPulse {
-    0% { 
-        transform: scale(0.95);
-        opacity: 0;
-    }
-    50% {
-        transform: scale(1.02);
-        opacity: 0.9;
-    }
-    100% { 
-        transform: scale(1);
-        opacity: 1;
-    }
+    0% { box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3); }
+    50% { box-shadow: 0 8px 30px rgba(220, 53, 69, 0.5); }
+    100% { box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3); }
 }
 
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% {
-        transform: translateY(0);
-    }
-    40% {
-        transform: translateY(-5px);
-    }
-    60% {
-        transform: translateY(-3px);
-    }
-}
-
-/* エラータイプ別のスタイル */
-.error-message.input-error {
-    border-color: #fd7e14;
-    border-left-color: #fd7e14;
-    background-color: #fff3cd;
-    color: #856404;
-    box-shadow: 0 6px 20px rgba(253, 126, 20, 0.3);
-}
-
-.error-message.input-error::before {
-    content: "📝 ";
-}
-
-.error-message.input-error .error-details {
-    border-left-color: #fd7e14;
-    background-color: rgba(255, 255, 255, 0.9);
-}
-
-.error-message.variable-error {
-    border-color: #6f42c1;
-    border-left-color: #6f42c1;
-    background-color: #e2d9f3;
-    color: #493057;
-    box-shadow: 0 6px 20px rgba(111, 66, 193, 0.3);
-}
-
-.error-message.variable-error::before {
-    content: "🔍 ";
-}
-
-.error-message.variable-error .error-details {
-    border-left-color: #6f42c1;
-    background-color: rgba(255, 255, 255, 0.9);
-}
-
-.error-message.calculation-error {
-    border-color: #dc3545;
-    border-left-color: #dc3545;
-    background-color: #f8d7da;
-    color: #721c24;
-    box-shadow: 0 6px 20px rgba(220, 53, 69, 0.3);
-}
-
-.error-message.calculation-error::before {
-    content: "💥 ";
-}
-
-.error-message.calculation-error .error-details {
-    border-left-color: #dc3545;
-    background-color: rgba(255, 255, 255, 0.8);
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-5px); }
+    60% { transform: translateY(-3px); }
 }
 
 /* ローディング */
@@ -678,7 +637,8 @@ header .btn {
     .solution-var {
         padding: 15px;
         font-size: 1rem; /* フォントサイズを調整 */
-        word-break: break-all;
+        overflow-wrap: break-word; /* 単語の途中でも折り返す */
+        white-space: pre-wrap; /* 空白を維持しつつ折り返す */
         /* 数式のスクロール許可 */
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -876,7 +836,7 @@ header .btn {
     }
 }
 
-/* ダークモード対応（準備） */
+/* ダークモード対応 */
 @media (prefers-color-scheme: dark) {
     body {
         background-color: #121212;
@@ -935,7 +895,22 @@ header .btn {
     .error-message {
         background-color: #2c1d1f;
         color: #f8d7da;
+        border-color: #842029;
         border-left-color: #dc3545;
+    }
+    .error-close-btn {
+        color: #f8d7da;
+        opacity: 0.8;
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+    .error-close-btn:hover {
+        background-color: rgba(255, 255, 255, 0.2);
+        opacity: 1;
+    }
+    .error-details {
+        background-color: rgba(0, 0, 0, 0.2);
+        color: #f1f1f1;
+        border-left-color: #842029;
     }
     .spinner {
         border-top-color: #007bff;
@@ -947,15 +922,18 @@ header .btn {
         color: #fff;
     }
     .symbols-table th {
-        background-color: #2c2c2c;
-        border-color: #555;
-        color: #e0e0e0;
+        background-color: #343a40;
+        border-color: #454d55;
+        color: #f8f9fa;
     }
     .symbols-table td {
-        border-color: #555;
+        border-color: #454d55;
+    }
+    .symbols-table tr:nth-child(even) {
+        background-color: transparent;
     }
     .symbols-table code {
-        background-color: #333;
-        color: #f06292;
+        background-color: #454d55;
+        color: #ff8c94;
     }
 }
