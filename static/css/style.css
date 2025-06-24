@@ -20,13 +20,11 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 1200px;
     margin: 0 auto;
     padding: 40px 20px; /* 上下のパディングを増やす */
-    /* スクロール可能にする */
-    min-height: 100vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
+    /* コンテナ内でのスクロールを廃止 */
+    min-height: auto;
 }
 
 /* ヘッダー */
@@ -280,6 +278,9 @@ header .btn {
     display: flex;
     flex-wrap: wrap;
     gap: 15px;
+    width: 100%;
+    max-width: 100%;
+    align-items: stretch;
 }
 
 .solution-var {
@@ -289,8 +290,17 @@ header .btn {
     border: 1px solid #ced4da; /* 枠線を調整 */
     font-size: 1rem;
     font-family: 'Consolas', 'Monaco', monospace; /* フォントを等幅に */
-    word-break: break-all;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    white-space: pre-wrap;
+    max-width: 100%;
+    min-width: 0;
+    flex-basis: 100%;
+    box-sizing: border-box;
     overflow-x: auto;
+    overflow-y: hidden; /* 縦スクロールを無効化 */
+    max-height: none;  /* 高さ制限を解除 */
 }
 
 /* エラーメッセージ */
@@ -487,6 +497,21 @@ header .btn {
     font-family: 'Consolas', 'Monaco', monospace;
 }
 
+/* レスポンシブ - 大画面 */
+@media (min-width: 1400px) {
+    .container {
+        max-width: 90%;
+        padding: 60px 40px;
+    }
+}
+
+@media (min-width: 1800px) {
+    .container {
+        max-width: 85%;
+        padding: 80px 60px;
+    }
+}
+
 /* レスポンシブ - タブレット */
 @media (max-width: 1024px) {
     .container {
@@ -508,12 +533,10 @@ header .btn {
         /* iOSでのスクロールバウンス制御 */
         overscroll-behavior: contain;
     }
-    
-    .container {
+      .container {
         padding: 15px; /* パディングを調整 */
-        /* スクロール確保 */
-        min-height: calc(100vh - 20px);
-        overflow: visible;
+        /* ページ全体でのスクロールに統一 */
+        min-height: auto;
     }
     
     /* エラーメッセージをモバイルで強化 */
@@ -633,14 +656,12 @@ header .btn {
         flex-direction: column;
         gap: 10px;
     }
-    
-    .solution-var {
+      .solution-var {
         padding: 15px;
         font-size: 1rem; /* フォントサイズを調整 */
         overflow-wrap: break-word; /* 単語の途中でも折り返す */
         white-space: pre-wrap; /* 空白を維持しつつ折り返す */
-        /* 数式のスクロール許可 */
-        overflow-x: auto;
+        /* スクロールを完全に無効化 */
         -webkit-overflow-scrolling: touch;
     }
     
@@ -799,9 +820,8 @@ header .btn {
         padding: 10px;
         touch-action: manipulation;
     }
-    
-    /* スクロール可能エリアの明示 */
-    .container, .modal-content, .solution-var {
+      /* スクロール可能エリアの明示 */
+    .modal-content, .solution-var {
         -webkit-overflow-scrolling: touch;
         overscroll-behavior: contain;
     }
@@ -886,11 +906,22 @@ header .btn {
     }
     .solution-label {
         color: #28a745;
-    }
-    .solution-var {
+    }    .solution-var {
         background-color: #333;
         border-color: #555;
         color: #e0e0e0;
+        word-break: break-word;
+        overflow-wrap: break-word;
+        hyphens: auto;
+        white-space: pre-wrap;
+        max-width: 100%;
+        min-width: 0;
+        flex-basis: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+        overflow-y: hidden !important;
+        max-height: none !important;
+        height: auto !important;
     }
     .error-message {
         background-color: #2c1d1f;
