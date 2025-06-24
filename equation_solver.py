@@ -217,16 +217,18 @@ def solve_equation():
             symbol_names = extract_symbols_from_texts(all_texts)
         if symbol_names:
             symbols(','.join(symbol_names))
+        # symbol_names から locals 辞書を作成し、E も変数扱い
+        locals_dict = {name: symbols(name) for name in symbol_names}
         eq_list = []
         for eq_str in eqs:
             eq_str = preprocess_equation(eq_str, symbol_names)
             if '=' in eq_str:
                 left, right = eq_str.split('=')
-                left = sympify(left)
-                right = sympify(right)
+                left = sympify(left, locals=locals_dict)
+                right = sympify(right, locals=locals_dict)
                 eq = Eq(left, right)
             else:
-                eq = sympify(eq_str)
+                eq = sympify(eq_str, locals=locals_dict)
             eq_list.append(eq)
         vars_symbols = [symbols(v) for v in solve_vars]
         solutions = solve(eq_list, vars_symbols, dict=True)

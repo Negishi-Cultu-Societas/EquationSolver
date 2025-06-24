@@ -287,6 +287,18 @@ function removeAssignedVariable(button) {
     item.remove();
 }
 
+// 方程式欄を削除
+function removeEquation(button) {
+    const item = button.parentElement;
+    item.remove();
+}
+
+// 変数欄を削除
+function removeVariable(button) {
+    const item = button.parentElement;
+    item.remove();
+}
+
 // 代入変数の自動検出
 async function autoDetectAssignableVariables() {
     const equations = getEquations();

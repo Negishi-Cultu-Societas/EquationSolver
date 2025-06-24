@@ -113,18 +113,19 @@ def solve_equation():
         # SymPyの記号を定義
         if symbol_names:
             symbols(','.join(symbol_names))
-        
+        # symbol_names から locals 辞書を作成し、E も変数扱い
+        locals_dict = {name: symbols(name) for name in symbol_names}
         # 方程式をSymPy形式に変換
         eq_list = []
         for eq_str in equations:
             eq_str = preprocess_equation(eq_str, symbol_names)
             if '=' in eq_str:
                 left, right = eq_str.split('=')
-                left_expr = sympify(left)
-                right_expr = sympify(right)
+                left_expr = sympify(left, locals=locals_dict)
+                right_expr = sympify(right, locals=locals_dict)
                 eq = Eq(left_expr, right_expr)
             else:
-                eq = sympify(eq_str)
+                eq = sympify(eq_str, locals=locals_dict)
             eq_list.append(eq)
         
         # 値を代入
