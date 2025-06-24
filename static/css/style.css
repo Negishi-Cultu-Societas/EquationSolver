@@ -259,6 +259,8 @@ header .btn {
     border: 1px solid #ced4da; /* 枠線を調整 */
     font-size: 1rem;
     font-family: 'Consolas', 'Monaco', monospace; /* フォントを等幅に */
+    word-break: break-all;
+    overflow-x: auto;
 }
 
 /* エラーメッセージ */
@@ -310,6 +312,30 @@ header .btn {
     white-space: pre-line;
     line-height: 1.6;
     border-left: 4px solid #dc3545;
+}
+
+/* エラーメッセージの閉じるボタン */
+.error-close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    width: 30px;
+    height: 30px;
+    border: none;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #721c24;
+    font-size: 20px;
+    line-height: 30px;
+    text-align: center;
+    cursor: pointer;
+    opacity: 0.7;
+    transition: all 0.2s ease;
+}
+
+.error-close-btn:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    opacity: 1;
 }
 
 /* エラーアニメーション */
@@ -569,7 +595,8 @@ header .btn {
     .solution-var {
         padding: 15px;
         font-size: 1rem; /* フォントサイズを調整 */
-        word-break: break-all;
+        overflow-wrap: break-word; /* 単語の途中でも折り返す */
+        white-space: pre-wrap; /* 空白を維持しつつ折り返す */
         /* 数式のスクロール許可 */
         overflow-x: auto;
         -webkit-overflow-scrolling: touch;
@@ -815,10 +842,11 @@ header .btn {
     }
     .error-close-btn {
         color: #f8d7da;
-        opacity: 0.7;
+        opacity: 0.8;
+        background-color: rgba(255, 255, 255, 0.1);
     }
     .error-close-btn:hover {
-        background-color: rgba(248, 215, 218, 0.1);
+        background-color: rgba(255, 255, 255, 0.2);
         opacity: 1;
     }
     .error-details {
