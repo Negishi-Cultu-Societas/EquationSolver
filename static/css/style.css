@@ -63,11 +63,26 @@ header .btn {
     flex: 1;
     display: flex;
     justify-content: flex-start;
+    gap: 10px;
+    align-items: center;
 }
 .header-btn-right {
     flex: 1;
     display: flex;
     justify-content: flex-end;
+}
+
+@media (max-width: 768px) {
+    .header-btn-left {
+        flex-direction: column;
+        width: 100%;
+        gap: 5px;
+    }
+    
+    .header-btn-left .btn {
+        width: 100%;
+        margin: 2px 0;
+    }
 }
 
 /* ボタンスタイル */

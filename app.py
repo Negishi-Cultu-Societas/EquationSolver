@@ -10,6 +10,7 @@ import matplotlib.pyplot as plt
 from matplotlib import font_manager
 import qrcode
 import socket
+from datetime import datetime
 
 app = Flask(__name__)
 
@@ -235,6 +236,75 @@ def auto_detect_assignable_vars():
         
     except Exception as e:
         return jsonify({'error': f'変数検出エラー: {str(e)}'})
+
+@app.route('/export', methods=['POST'])
+def export_eqsl():
+    """計算データを.eqslファイルとしてエクスポート"""
+    try:
+        data = request.get_json()
+        
+        # エクスポートするデータを構造化
+        export_data = {
+            "version": "1.0",
+            "timestamp": datetime.now().isoformat(),
+            "input_data": {
+                "equations": data.get('equations', []),
+                "solve_vars": data.get('solve_vars', []),
+                "assigned_vars": data.get('assigned_vars', {})
+            },
+            "results": data.get('results', [])
+        }
+        
+        # JSONファイルとして生成
+        json_str = json.dumps(export_data, ensure_ascii=False, indent=2)
+        
+        # バイトストリームに変換
+        buffer = io.BytesIO()
+        buffer.write(json_str.encode('utf-8'))
+        buffer.seek(0)
+        
+        # ファイル名を生成（タイムスタンプ付き）
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        filename = f"equation_solver_{timestamp}.eqsl"
+        
+        return send_file(
+            buffer,
+            as_attachment=True,
+            download_name=filename,
+            mimetype='application/json'
+        )
+        
+    except Exception as e:
+        return jsonify({'error': f'エクスポートエラー: {str(e)}'}), 500
+
+@app.route('/import', methods=['POST'])
+def import_eqsl():
+    """計算データを.eqslファイルからインポート"""
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'ファイルが選択されていません'}), 400
+        
+        file = request.files['file']
+        if file.filename == '':
+            return jsonify({'error': 'ファイルが選択されていません'}), 400
+        
+        if not file.filename.endswith('.eqsl'):
+            return jsonify({'error': '拡張子が.eqslのファイルを選択してください'}), 400
+        
+        # ファイル内容を読み込み
+        file_content = file.read().decode('utf-8')
+        data = json.loads(file_content)
+        
+        # データの検証
+        if 'version' not in data or 'input_data' not in data:
+            return jsonify({'error': '無効なファイル形式です'}), 400
+        
+        return jsonify({'success': True, 'data': data})
+        
+    except json.JSONDecodeError:
+        return jsonify({'error': 'JSONファイルの解析に失敗しました'}), 400
+    except Exception as e:
+        return jsonify({'error': f'インポートエラー: {str(e)}'}), 500
 
 if __name__ == '__main__':
     import os
