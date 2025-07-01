@@ -645,7 +645,7 @@ function exportData() {
             const a = document.createElement('a');
             a.style.display = 'none';
             a.href = url;
-            a.download = `equation_solver_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.eqsl`;
+            a.download = `equation_solver_${new Date().toISOString().slice(0,19).replace(/:/g, '-')}.json`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
@@ -668,8 +668,8 @@ function handleImportFile(event) {
     const file = event.target.files[0];
     if (!file) return;
     
-    if (!file.name.endsWith('.eqsl')) {
-        showError('拡張子が.eqslのファイルを選択してください。');
+    if (!file.name.endsWith('.json')) {
+        showError('拡張子が.jsonのファイルを選択してください。');
         return;
     }
     

@@ -238,8 +238,8 @@ def auto_detect_assignable_vars():
         return jsonify({'error': f'変数検出エラー: {str(e)}'})
 
 @app.route('/export', methods=['POST'])
-def export_eqsl():
-    """計算データを.eqslファイルとしてエクスポート"""
+def export_json():
+    """計算データを.jsonファイルとしてエクスポート"""
     try:
         data = request.get_json()
         
@@ -265,7 +265,7 @@ def export_eqsl():
         
         # ファイル名を生成（タイムスタンプ付き）
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        filename = f"equation_solver_{timestamp}.eqsl"
+        filename = f"equation_solver_{timestamp}.json"
         
         return send_file(
             buffer,
@@ -278,8 +278,8 @@ def export_eqsl():
         return jsonify({'error': f'エクスポートエラー: {str(e)}'}), 500
 
 @app.route('/import', methods=['POST'])
-def import_eqsl():
-    """計算データを.eqslファイルからインポート"""
+def import_json():
+    """計算データを.jsonファイルからインポート"""
     try:
         if 'file' not in request.files:
             return jsonify({'error': 'ファイルが選択されていません'}), 400
@@ -288,8 +288,8 @@ def import_eqsl():
         if file.filename == '':
             return jsonify({'error': 'ファイルが選択されていません'}), 400
         
-        if not file.filename.endswith('.eqsl'):
-            return jsonify({'error': '拡張子が.eqslのファイルを選択してください'}), 400
+        if not file.filename.endswith('.json'):
+            return jsonify({'error': '拡張子が.jsonのファイルを選択してください'}), 400
         
         # ファイル内容を読み込み
         file_content = file.read().decode('utf-8')
