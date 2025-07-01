@@ -1,0 +1,39 @@
+{
+  "version": "1.0",
+  "timestamp": "2025-07-01T22:25:34.819081",
+  "input_data": {
+    "equations": [
+      "E1-I1*R1-I2*R2=0",
+      "I1+I3=I2",
+      "E1-I1*R1+I3*R3-E2=0"
+    ],
+    "solve_vars": [
+      "I1",
+      "I3",
+      "I2"
+    ],
+    "assigned_vars": {
+      "R1": "1",
+      "R2": "1",
+      "R3": "1",
+      "E1": "7",
+      "E2": "5"
+    }
+  },
+  "results": [
+    {
+      "label": "解 1:",
+      "variables": [
+        {
+          "content": "<mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"30\" style=\"font-size: 111%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-msub><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D43C TEX-I\"></mjx-c></mjx-mi><mjx-script style=\"vertical-align: -0.15em; margin-left: -0.064em;\"><mjx-texatom size=\"s\" texclass=\"ORD\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c31\"></mjx-c></mjx-mn></mjx-texatom></mjx-script></mjx-msub><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c33\"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msub><mi>I</mi><mrow data-mjx-texclass=\"ORD\"><mn>1</mn></mrow></msub><mo>=</mo><mn>3</mn></math></mjx-assistive-mml></mjx-container>"
+        },
+        {
+          "content": "<mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"31\" style=\"font-size: 111%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-msub><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D43C TEX-I\"></mjx-c></mjx-mi><mjx-script style=\"vertical-align: -0.15em; margin-left: -0.064em;\"><mjx-texatom size=\"s\" texclass=\"ORD\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c32\"></mjx-c></mjx-mn></mjx-texatom></mjx-script></mjx-msub><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c34\"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msub><mi>I</mi><mrow data-mjx-texclass=\"ORD\"><mn>2</mn></mrow></msub><mo>=</mo><mn>4</mn></math></mjx-assistive-mml></mjx-container>"
+        },
+        {
+          "content": "<mjx-container class=\"MathJax CtxtMenu_Attached_0\" jax=\"CHTML\" tabindex=\"0\" ctxtmenu_counter=\"32\" style=\"font-size: 111%; position: relative;\"><mjx-math class=\"MJX-TEX\" aria-hidden=\"true\"><mjx-msub><mjx-mi class=\"mjx-i\"><mjx-c class=\"mjx-c1D43C TEX-I\"></mjx-c></mjx-mi><mjx-script style=\"vertical-align: -0.15em; margin-left: -0.064em;\"><mjx-texatom size=\"s\" texclass=\"ORD\"><mjx-mn class=\"mjx-n\"><mjx-c class=\"mjx-c33\"></mjx-c></mjx-mn></mjx-texatom></mjx-script></mjx-msub><mjx-mo class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c3D\"></mjx-c></mjx-mo><mjx-mn class=\"mjx-n\" space=\"4\"><mjx-c class=\"mjx-c31\"></mjx-c></mjx-mn></mjx-math><mjx-assistive-mml unselectable=\"on\" display=\"inline\"><math xmlns=\"http://www.w3.org/1998/Math/MathML\"><msub><mi>I</mi><mrow data-mjx-texclass=\"ORD\"><mn>3</mn></mrow></msub><mo>=</mo><mn>1</mn></math></mjx-assistive-mml></mjx-container>"
+        }
+      ]
+    }
+  ]
+}
